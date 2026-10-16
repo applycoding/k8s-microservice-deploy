@@ -1,0 +1,12 @@
+apiVersion: v2
+name: trips-api
+description: Demo chart for the trips API and a small bundled Postgres
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.25.0-0"
+home: https://github.com/applycoding/k8s-microservice-deploy
+sources:
+  - https://github.com/applycoding/k8s-microservice-deploy
+maintainers:
+  - name: Arpan Bom
