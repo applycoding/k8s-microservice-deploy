@@ -1,0 +1,29 @@
+Trips API is installed in namespace {{ .Release.Namespace }}.
+
+The API listens on service {{ include "trips-api.fullname" . }} port {{ .Values.service.port }}.
+
+Port-forward:
+
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "trips-api.fullname" . }} 8080:{{ .Values.service.port }}
+
+Then:
+
+  curl -s localhost:8080/healthz
+  curl -s localhost:8080/readyz
+  curl -s localhost:8080/metrics
+
+{{- if .Values.postgresql.enabled }}
+
+Bundled Postgres service: {{ include "trips-api.postgresName" . }}:5432
+{{- else }}
+
+Using external database host {{ .Values.database.host }}.
+{{- end }}
+
+{{- if not .Values.ingress.enabled }}
+
+Ingress is disabled. Set ingress.enabled=true when a controller is installed.
+{{- end }}
+
+This chart is a demo. The database password in values.yaml is not a production secret.
+HPA is created when autoscaling.enabled=true. kind does not ship metrics-server, so the HPA will not scale until one is installed.

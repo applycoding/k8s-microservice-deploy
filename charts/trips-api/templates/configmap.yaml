@@ -1,0 +1,17 @@
+{{- if and (not .Values.postgresql.enabled) (not .Values.database.host) }}
+{{- fail "database.host is required when postgresql.enabled is false" }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "trips-api.fullname" . }}
+  labels:
+    {{- include "trips-api.labels" . | nindent 4 }}
+data:
+  ADDR: {{ .Values.config.addr | quote }}
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  DATABASE_HOST: {{ include "trips-api.databaseHost" . | quote }}
+  DATABASE_PORT: {{ .Values.database.port | quote }}
+  DATABASE_NAME: {{ .Values.database.name | quote }}
+  DATABASE_USER: {{ .Values.database.user | quote }}
+  DATABASE_SSLMODE: {{ .Values.database.sslmode | quote }}
